@@ -30,7 +30,7 @@ class ObjectDetectionNode(Node):
         #Publishers
         self.segmentation_pub = self.create_publisher(Image, '/output/segmentation', 10)
         self.detection_pub = self.create_publisher(Detection2DArray, '/output/detection', 10)
-
+        self.det_image_pub = self.create_publisher(Image, '/output/detection_img', 10)
 
         self.COLORS = {
             0: [0, 0, 0],       # Background - Black
@@ -44,6 +44,19 @@ class ObjectDetectionNode(Node):
         for label, color in self.COLORS.items():
             color_image[segmentation_mask == label] = color
         return color_image
+    
+    def detected_image(self,cv_image, xywh):
+        for i, box in enumerate(xywh):
+            cx, cy, w, h = box
+            x1 = int(cx - w / 2)
+            y1 = int(cy - h / 2)
+            x2 = int(cx + w / 2)
+            y2 = int(cy + h / 2)
+
+            # Draw the rectangle
+            color = (255, 0, 0)  # Blue color for bounding box
+            bb = cv2.rectangle(cv_image, (x1, y1), (x2, y2), color, 2)
+        return bb 
         
     def image_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
@@ -52,7 +65,7 @@ class ObjectDetectionNode(Node):
         detections = self.run_detection(cv_image)
         segmentation_mask = self.run_segmentation(cv_image)
 
-        self.publish_results(detections, segmentation_mask)
+        self.publish_results(cv_image,detections, segmentation_mask)
 
     def run_detection(self, image):
         #Preprocess the image for detection
@@ -77,7 +90,7 @@ class ObjectDetectionNode(Node):
 
         return input_tensor
 
-    def publish_results(self, detections, segmentation_mask):
+    def publish_results(self, cv_image, detections, segmentation_mask):
         #Convert segmentation mask to ROS Image message and publish
         color_image = self.map_classes_to_colors(segmentation_mask)
         #Convert the color image to a ROS Image message
@@ -88,6 +101,9 @@ class ObjectDetectionNode(Node):
         detection_msg = Detection2DArray()
         #print(len(detections))
         xywh = detections[0].boxes.xywh
+        det_img = self.detected_image(cv_image, xywh.numpy())
+        det_img=self.bridge.cv2_to_imgmsg(det_img, encoding="rgb8")
+        self.det_image_pub.publish(det_img)
         class_labels = detections[0].boxes.cls 
         confidences = detections[0].boxes.conf  
 
