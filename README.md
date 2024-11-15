@@ -7,13 +7,15 @@ This project focuses on developing a pallet detection and segmentation applicati
 ### Data Preparation:
 - Annotated the provided dataset and split it into training, validation, and test sets.
 - Used Grounded SAM to get both bounding box and segmented outputs based on a prompt.
-  NOTE: The annotations weren't as accurate as that of say a human annotator. 
+  NOTE: The annotations weren't as accurate as that of say a human annotator.
+  ## todo : insert images for both
 - Applied data augmentation to simulate real-world scenarios with varied lighting conditions.
 
 
 ### Model Development:
 - **YOLOv11 Model**: Trained to detect pallets in images.
 - **U-Net Model**: Developed for semantic segmentation to distinguish pallets from the background.
+## todo - paste outputs
 
 ### Model Tuning and Evaluation:
 - Evaluated the YOLO model using Mean Average Precision (mAP).
@@ -25,6 +27,8 @@ This project focuses on developing a pallet detection and segmentation applicati
 - **Detection and Segmentation Node**: Subscribes to `camera/image` and performs pallet detection and segmentation, publishing results to:
   - **`/output/segmentation`**: Outputs segmentation results as an array.
   - **`/output/detection`**: Publishes detection results in `Detection2D` format. Subscribers to this topic should handle data accordingly.
+## todo - add a topic for displaying detections. 
+## todo - do display
 
 ### Dockerization:
 - The application was containerized to run on devices with NVIDIA GPU access, providing portability and ease of deployment.
