@@ -7,6 +7,7 @@ This project focuses on developing a pallet detection and segmentation applicati
 ### Data Preparation:
 - Annotated the provided dataset and split it into training, validation, and test sets.
 - Used Grounded SAM to get both bounding box and segmented outputs based on a prompt.
+  NOTE: The annotations weren't as accurate as that of say a human annotator. 
 - Applied data augmentation to simulate real-world scenarios with varied lighting conditions.
 
 
@@ -33,15 +34,18 @@ This project focuses on developing a pallet detection and segmentation applicati
 ### 1. Build the Docker Image
 Navigate to the directory containing your Dockerfile and run the following command to build the Docker image:
 
+```
+docker build -t pallet_detection . 
+```
+
 ### 2. Run the Docker Container
 
 #### Using a Camera Plugin
 If your setup uses a camera plugin: Ensure that the correct camera topic is specified in `cam_subscriber.py` (typically on line 28) to match your plugin’s topic configuration.
 
 #### Without a Camera Plugin
-If no plugin is available: Run the Docker container with permissions to access the physical camera using:
+If no plugin is available: Run the Docker container with permissions to access the physical camera using (web cam in my case): 
 
-```bash
-1. docker build -t pallet_detection .  
-
-2. sudo docker run -it --rm --gpus all --device /dev/video0:/dev/video0 --name ros2_pallet_detection pallet_detection
+```
+sudo docker run -it --rm --gpus all --device /dev/video0:/dev/video0 --name ros2_pallet_detection pallet_detection
+```
