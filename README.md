@@ -12,7 +12,7 @@ This project focuses on developing a pallet detection and segmentation applicati
 
 
 ### Model Development:
-- **YOLO Model**: Trained to detect pallets in images.
+- **YOLOv11 Model**: Trained to detect pallets in images.
 - **U-Net Model**: Developed for semantic segmentation to distinguish pallets from the background.
 
 ### Model Tuning and Evaluation:
