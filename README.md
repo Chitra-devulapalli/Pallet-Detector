@@ -6,7 +6,7 @@ This project focuses on developing a pallet detection and segmentation applicati
 
 ### Data Preparation:
 - Annotated the provided dataset and split it into training, validation, and test sets.
-- Used Grounded SAM to get both bounding box and segmented outputs based on a prompt.
+- Used Grounded SAM to get both bounding box and segmented outputs based on a prompt. Various prompts were tested. "Pallets" and "Floor" worked the best. 
 
   ![Screenshot from 2024-11-14 23-19-06](https://github.com/user-attachments/assets/a45a873c-3c67-48c9-9bb7-cf081d4601d3)
   ![Screenshot from 2024-11-14 23-19-18](https://github.com/user-attachments/assets/e001e2d5-f3da-4beb-9f08-42d15d896e86)
@@ -17,22 +17,25 @@ This project focuses on developing a pallet detection and segmentation applicati
 
 
 ### Model Development:
-- **YOLOv11 Model**: Trained to detect pallets in images.
-- **U-Net Model**: Developed for semantic segmentation to distinguish pallets from the background.
+- **YOLOv11 Model**: Trained to detect pallets in images. The performance is similar to how the annotated data looks.
+![Screenshot from 2024-11-15 17-08-14](https://github.com/user-attachments/assets/908f4b6d-ba0d-4ee7-aeec-2de910c4fde1)
+
+- **U-Net Model**: Developed for semantic segmentation to distinguish pallets from the background. This performance again was similar to that of the annotations.
 ![Screenshot from 2024-11-15 16-29-37](https://github.com/user-attachments/assets/1e12bdea-5351-4dad-a606-1edd7722dc21)
 
 
 ### Model Tuning and Evaluation:
 - Evaluated the YOLO model using Mean Average Precision (mAP).
 - Evaluated the U-Net model using Intersection over Union (IoU).
-- Tested pruning techniques, but it impacted performance negatively. Models were converted to ONNX for optimized deployment.
+- Tested pruning techniques, but it impacted performance negatively. Models were converted to ONNX for optimized deployment. Converting to ONNX also seemed to have reduced the performance. 
 
 ### ROS2 Node Development:
 - **Image Publisher Node**: Captures video from a camera feed and publishes to the `camera/image` topic.
 - **Detection and Segmentation Node**: Subscribes to `camera/image` and performs pallet detection and segmentation, publishing results to:
   - **`/output/segmentation`**: Outputs segmentation results as an array.
   - **`/output/detection`**: Publishes detection results in `Detection2D` format. Subscribers to this topic should handle data accordingly.
-## todo - add a topic for displaying detections. 
+  - **`/output/detection_img`**: Publishes the original image overlapped with the bounding boxes.
+
 ## todo - do display
 
 ### Dockerization:
