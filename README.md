@@ -6,7 +6,9 @@ This project focuses on developing a pallet detection and segmentation applicati
 
 ### Data Preparation:
 - Annotated the provided dataset and split it into training, validation, and test sets.
+- Used Grounded SAM to get both bounding box and segmented outputs based on a prompt.
 - Applied data augmentation to simulate real-world scenarios with varied lighting conditions.
+
 
 ### Model Development:
 - **YOLO Model**: Trained to detect pallets in images.
@@ -42,4 +44,4 @@ If no plugin is available: Run the Docker container with permissions to access t
 ```bash
 1. docker build -t pallet_detection .  
 
-2. sudo docker run -it --rm --gpus all --privileged --device /dev/video0:/dev/video0 --name ros2_pallet_detection pallet_detection
+2. sudo docker run -it --rm --gpus all --device /dev/video0:/dev/video0 --name ros2_pallet_detection pallet_detection
