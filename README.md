@@ -31,10 +31,6 @@ This project focuses on developing a pallet detection and segmentation applicati
 ### 1. Build the Docker Image
 Navigate to the directory containing your Dockerfile and run the following command to build the Docker image:
 
-
-```bash
-docker build -t pallet_detection .  
-
 ### 2. Run the Docker Container
 
 #### Using a Camera Plugin
@@ -44,4 +40,6 @@ If your setup uses a camera plugin: Ensure that the correct camera topic is spec
 If no plugin is available: Run the Docker container with permissions to access the physical camera using:
 
 ```bash
-sudo docker run -it --rm --gpus all --privileged --device /dev/video0:/dev/video0 --name ros2_pallet_detection pallet_detection
+1. docker build -t pallet_detection .  
+
+2. sudo docker run -it --rm --gpus all --privileged --device /dev/video0:/dev/video0 --name ros2_pallet_detection pallet_detection
