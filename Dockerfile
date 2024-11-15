@@ -7,9 +7,11 @@ ENV COLCON_DEFAULTS_FILE=/home/ros2_ws
 
 WORKDIR /ros2_ws
 
-COPY ./src /home/ros2_ws/src
-COPY ./requirements.txt /home/ros2_ws/requirements.txt
+COPY ./src /ros2_ws/src
+COPY ./requirements.txt /ros2_ws/requirements.txt
 COPY ./ros_entrypoint.sh /ros_entrypoint.sh
+RUN chmod +x /ros_entrypoint.sh
+
 
 RUN apt-get update && apt-get install -y \
     ros-humble-sensor-msgs \
@@ -19,8 +21,8 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install -r /home/ros2_ws/requirements.txt
+RUN pip3 install -r /ros2_ws/requirements.txt
 
-RUN source source /opt/ros/$ROS_DISTRO/setup.bash 
+RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.bash"
 
 CMD ["bash", "-c", "colcon build && source install/setup.bash && ros2 launch seg_det detection_launch.py"]

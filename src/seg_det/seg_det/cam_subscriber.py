@@ -21,8 +21,8 @@ class ObjectDetectionNode(Node):
         print("HEHE")
         self.bridge = CvBridge()
         self.segmentation_model = UNet()
-        self.s_model = ort.InferenceSession("/home/ros2_ws/src/seg_det/seg_det/segmentation.onnx")
-        self.detection_model = YOLO("/home/ros2_ws/src/seg_det/seg_det/detection.onnx", task="detect")
+        self.s_model = ort.InferenceSession("/ros2_ws/src/seg_det/seg_det/segmentation.onnx")
+        self.detection_model = YOLO("/ros2_ws/src/seg_det/seg_det/detection.onnx", task="detect")
 
         #Subscribers
         self.create_subscription(Image, '/camera/image', self.image_callback, 10) #give camera image topic based on the camera used
