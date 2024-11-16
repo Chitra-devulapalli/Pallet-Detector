@@ -17,7 +17,7 @@ This project focuses on developing a pallet detection and segmentation applicati
 
 
 ### Model Development:
-- **YOLOv11 Model**: Trained to detect pallets in images. The performance is similar to how the annotated data looks.
+- **YOLOv11 Model**: Trained to detect pallets in images. The performance is similar to how the annotated data looks. Note - changing the model to ONNX format deteriorated the performance considerably. Both the models are included. 
 ![Screenshot from 2024-11-15 17-08-14](https://github.com/user-attachments/assets/908f4b6d-ba0d-4ee7-aeec-2de910c4fde1)
 
 - **U-Net Model**: Developed for semantic segmentation to distinguish pallets from the background. This performance again was similar to that of the annotations.
@@ -53,7 +53,7 @@ docker build -t pallet_detection .
 ### 2. Run the Docker Container
 
 #### Using a Camera Plugin
-If your setup uses a camera plugin: Ensure that the correct camera topic is specified in `cam_subscriber.py` (typically on line 28) to match your plugin’s topic configuration.
+If your setup uses a camera plugin: Ensure that the correct camera topic is specified in `cam_subscriber.py` (typically on line 30) to match your plugin’s topic configuration.
 
 #### Without a Camera Plugin
 If no plugin is available: Run the Docker container with permissions to access the physical camera using (web cam in my case): 
