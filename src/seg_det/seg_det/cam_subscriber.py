@@ -22,7 +22,9 @@ class ObjectDetectionNode(Node):
         self.bridge = CvBridge()
         self.segmentation_model = UNet()
         self.s_model = ort.InferenceSession("/ros2_ws/src/seg_det/seg_det/segmentation.onnx")
-        self.detection_model = YOLO("/ros2_ws/src/seg_det/seg_det/detection.onnx", task="detect")
+
+        #Change to detection.onnx model if necessary
+        self.detection_model = YOLO("/ros2_ws/src/seg_det/seg_det/detection.pt", task="detect") 
 
         #Subscribers
         self.create_subscription(Image, '/camera/image', self.image_callback, 10) #give camera image topic based on the camera used
@@ -46,6 +48,8 @@ class ObjectDetectionNode(Node):
         return color_image
     
     def detected_image(self,cv_image, xywh):
+        #returns blank image if no bounding boxes are detected
+        bb = np.zeros((416, 416, 3), np.uint8)
         for i, box in enumerate(xywh):
             cx, cy, w, h = box
             x1 = int(cx - w / 2)
@@ -53,7 +57,7 @@ class ObjectDetectionNode(Node):
             x2 = int(cx + w / 2)
             y2 = int(cy + h / 2)
 
-            # Draw the rectangle
+            #Draw the rectangle
             color = (255, 0, 0)  # Blue color for bounding box
             bb = cv2.rectangle(cv_image, (x1, y1), (x2, y2), color, 2)
         return bb 
