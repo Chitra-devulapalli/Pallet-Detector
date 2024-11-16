@@ -36,8 +36,6 @@ This project focuses on developing a pallet detection and segmentation applicati
   - **`/output/detection`**: Publishes detection results in `Detection2D` format. Subscribers to this topic should handle data accordingly.
   - **`/output/detection_img`**: Publishes the original image overlapped with the bounding boxes.
 
-## todo - do display
-
 ### Dockerization:
 - The application was containerized to run on devices with NVIDIA GPU access, providing portability and ease of deployment.
 
