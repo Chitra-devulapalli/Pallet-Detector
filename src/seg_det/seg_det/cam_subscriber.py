@@ -1,7 +1,9 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray, Detection2D, ObjectHypothesisWithPose
+import time
 
 from cv_bridge import CvBridge
 import numpy as np
@@ -27,7 +29,7 @@ class ObjectDetectionNode(Node):
         self.detection_model = YOLO("/ros2_ws/src/seg_det/seg_det/detection.pt", task="detect") 
 
         #Subscribers
-        self.create_subscription(Image, '/camera/image', self.image_callback, 10) #give camera image topic based on the camera used
+        self.create_subscription(Image, '/robot1/zed2i/left/image_rect_color', self.image_callback, QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT)) #give camera image topic based on the camera used
         
         #Publishers
         self.segmentation_pub = self.create_publisher(Image, '/output/segmentation', 10)
@@ -49,6 +51,7 @@ class ObjectDetectionNode(Node):
     
     def detected_image(self,cv_image, xywh):
         #returns blank image if no bounding boxes are detected
+        cv_image = cv2.resize(cv_image,(416,416))
         bb = np.zeros((416, 416, 3), np.uint8)
         for i, box in enumerate(xywh):
             cx, cy, w, h = box
@@ -96,9 +99,11 @@ class ObjectDetectionNode(Node):
 
     def publish_results(self, cv_image, detections, segmentation_mask):
         #Convert segmentation mask to ROS Image message and publish
+        timestamp = time.time_ns()
         color_image = self.map_classes_to_colors(segmentation_mask)
         #Convert the color image to a ROS Image message
         mask_msg = self.bridge.cv2_to_imgmsg(color_image, encoding="rgb8")
+        cv2.imwrite(f'/ros2_ws/src/seg_det/seg_det/outputs/segmentation_output{timestamp}.jpg', color_image)
         self.segmentation_pub.publish(mask_msg)
 
         #Publish detection results in the Detection2DArray format
@@ -106,6 +111,8 @@ class ObjectDetectionNode(Node):
         #print(len(detections))
         xywh = detections[0].boxes.xywh
         det_img = self.detected_image(cv_image, xywh.numpy())
+        cv2.imwrite(f'/ros2_ws/src/seg_det/seg_det/outputs/detection_output{timestamp}.jpg', det_img) 
+        print("SAVED")
         det_img=self.bridge.cv2_to_imgmsg(det_img, encoding="rgb8")
         self.det_image_pub.publish(det_img)
         class_labels = detections[0].boxes.cls 

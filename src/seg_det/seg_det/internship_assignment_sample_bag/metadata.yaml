@@ -1,0 +1,32 @@
+rosbag2_bagfile_information:
+  version: 5
+  storage_identifier: sqlite3
+  duration:
+    nanoseconds: 5889500146
+  starting_time:
+    nanoseconds_since_epoch: 1731952367884160496
+  message_count: 178
+  topics_with_message_count:
+    - topic_metadata:
+        name: /robot1/zed2i/left/camera_info
+        type: sensor_msgs/msg/CameraInfo
+        serialization_format: cdr
+        offered_qos_profiles: "- history: 1\n  depth: 5\n  reliability: 2\n  durability: 2\n  deadline:\n    sec: 9223372036\n    nsec: 854775807\n  lifespan:\n    sec: 9223372036\n    nsec: 854775807\n  liveliness: 1\n  liveliness_lease_duration:\n    sec: 9223372036\n    nsec: 854775807\n  avoid_ros_namespace_conventions: false"
+      message_count: 89
+    - topic_metadata:
+        name: /robot1/zed2i/left/image_rect_color
+        type: sensor_msgs/msg/Image
+        serialization_format: cdr
+        offered_qos_profiles: "- history: 1\n  depth: 5\n  reliability: 2\n  durability: 2\n  deadline:\n    sec: 9223372036\n    nsec: 854775807\n  lifespan:\n    sec: 9223372036\n    nsec: 854775807\n  liveliness: 1\n  liveliness_lease_duration:\n    sec: 9223372036\n    nsec: 854775807\n  avoid_ros_namespace_conventions: false"
+      message_count: 89
+  compression_format: ""
+  compression_mode: ""
+  relative_file_paths:
+    - internship_assignment_sample_bag_0.db3
+  files:
+    - path: internship_assignment_sample_bag_0.db3
+      starting_time:
+        nanoseconds_since_epoch: 1731952367884160496
+      duration:
+        nanoseconds: 5889500146
+      message_count: 178
