@@ -40,6 +40,7 @@ This project focuses on developing a pallet detection and segmentation applicati
 - The application was containerized to run on devices with NVIDIA GPU access, providing portability and ease of deployment.
 
 ## Instructions to Run the Application
+#### First, place the ros_bag file in the following path -> "/src/seg_det/seg_det"
 
 ### 1. Build the Docker Image
 Navigate to the directory containing your Dockerfile and run the following command to build the Docker image:
@@ -49,13 +50,17 @@ docker build -t pallet_detection .
 ```
 
 ### 2. Run the Docker Container
-
-#### Using a Camera Plugin
-If your setup uses a camera plugin: Ensure that the correct camera topic is specified in `cam_subscriber.py` (typically on line 30) to match your plugin’s topic configuration.
-
-#### Without a Camera Plugin
-If no plugin is available: Run the Docker container with permissions to access the physical camera using (web cam in my case): 
+NOTE : If no GPU's are avaialable, remove the --gpus in the command
 
 ```
-sudo docker run -it --rm --gpus all --device /dev/video0:/dev/video0 --name ros2_pallet_detection pallet_detection
+sudo docker run -it --rm --gpus all --name ros2_pallet_detection pallet_detection
 ```
+
+### 3. Move the outputs to host machine to visualize 
+
+```
+ sudo docker cp ros2_pallet_detection:/ros2_ws/src/seg_det/seg_det/outputs ./Documents
+```
+This would move the output images to your host machine. 
+
+
